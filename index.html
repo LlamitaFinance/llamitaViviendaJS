@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>LlamitaVivienda</title>
+
+    <!-- llamada a bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-6">
+                <h2>Calcular amortización método francés LlamitaVivienda</h2>
+                <div class="form-group">
+                    <label for="monto" id="labelMonto">Monto (en soles)</label>
+                    <input type="text" class="form-control" id="monto" placeholder="Ingresar monto">
+                </div>
+                <div class="form-group">
+                    <label for="tiempo" id="labelTiempo">Tiempo en Meses</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="tiempo" placeholder="Ingresar cantidad de meses">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button"
+                                id="btnCambiarTiempo">Cambiar a Años</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="tnm">TNM (%)</label>
+                    <input type="text" value="0.8" class="form-control" id="tnm" placeholder="Ingresar TNM">
+                </div>
+                <div class="form-group">
+                    <label for="tem">TEM</label>
+                    <input type="text" class="form-control" id="tem" placeholder="TEM calculada" disabled>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnCalcular">Calcular</button>
+                <button type="button" class="btn btn-secondary" id="btnCambiarMoneda">Cambiar moneda</button>
+                <button type="button" class="btn btn-secondary" id="btnConvertirTNA">Convertir TNM a TEM</button>
+            </div>
+            <div class="col-6">
+                <table id="lista-tabla" class="table">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Cuota</th>
+                            <th>Capital</th>
+                            <th>Interés</th>
+                            <th>Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/amortizacion.js"></script>
+    <script src="js/moment.js"></script>
+
+    <script>
+        var isSoles = true; // Variable para controlar la moneda actual
+        var isMonths = true; // Variable para controlar el tiempo actual
+
+        // Función para cambiar la etiqueta y la moneda
+        function cambiarMoneda() {
+            var labelMonto = document.getElementById("labelMonto");
+            var monto = document.getElementById("monto").value;
+            var tipoCambio = 3.5; // Tipo de cambio de soles a dólares
+
+            if (isSoles) {
+                // Cambiar de soles a dólares
+                labelMonto.innerText = "Monto (en dólares)";
+                var montoDolares = parseFloat(monto) / tipoCambio;
+                document.getElementById("monto").value = montoDolares.toFixed(2);
+                isSoles = false;
+            } else {
+                // Cambiar de dólares a soles
+                labelMonto.innerText = "Monto (en soles)";
+                var montoSoles = parseFloat(monto) * tipoCambio;
+                document.getElementById("monto").value = montoSoles.toFixed(2);
+                isSoles = true;
+            }
+        }
+
+        // Función para convertir TNM a TEM
+        function convertirTNMaTEM() {
+            var tnm = parseFloat(document.getElementById("tnm").value);
+            var tem = Math.pow(1 + tnm / 100, 1 / 12) - 1;
+            document.getElementById("tem").value = tem.toFixed(2);
+        }
+
+        // Función para cambiar el tiempo de meses a años y viceversa
+        function cambiarTiempo() {
+            var labelTiempo = document.getElementById("labelTiempo");
+            var tiempo = document.getElementById("tiempo").value;
+            var btnCambiarTiempo = document.getElementById("btnCambiarTiempo");
+
+            if (isMonths) {
+                // Cambiar de meses a años
+                labelTiempo.innerText = "Tiempo en Años";
+                var tiempoAnios = parseFloat(tiempo) / 12;
+                document.getElementById("tiempo").value = tiempoAnios.toFixed(2);
+                btnCambiarTiempo.innerText = "Cambiar a Meses";
+                isMonths = false;
+            } else {
+                // Cambiar de años a meses
+                labelTiempo.innerText = "Tiempo en Meses";
+                var tiempoMeses = parseFloat(tiempo) * 12;
+                document.getElementById("tiempo").value = tiempoMeses.toFixed(0);
+                btnCambiarTiempo.innerText = "Cambiar a Años";
+                isMonths = true;
+            }
+        }
+
+        // Evento click para el botón de cambiar moneda
+        document.getElementById("btnCambiarMoneda").addEventListener("click", cambiarMoneda);
+
+        // Evento click para el botón de convertir TNM a TEM
+        document.getElementById("btnConvertirTNA").addEventListener("click", convertirTNMaTEM);
+
+        // Evento click para el botón de cambiar tiempo
+        document.getElementById("btnCambiarTiempo").addEventListener("click", cambiarTiempo);
+    </script>
+
+    <!-- llamada a bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnHfAG3vo0m2o1KR6D"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUzF3ypfzF+QJ8h6Ls8eN7J4Bj6m1iRM4wewb1+ErmU2N"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
