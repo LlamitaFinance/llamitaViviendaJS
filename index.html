@@ -8,9 +8,7 @@
     <title>LlamitaVivienda</title>
 
     <!-- llamada a bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-        crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
 <body>
@@ -27,14 +25,17 @@
                     <div class="input-group">
                         <input type="text" class="form-control" id="tiempo" placeholder="Ingresar cantidad de meses">
                         <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button"
-                                id="btnCambiarTiempo">Cambiar a Años</button>
+                            <button class="btn btn-outline-secondary" type="button" id="btnCambiarTiempo">Cambiar a Años</button>
                         </div>
                     </div>
                 </div>
+                <div class="form-group" hidden>
+                    <label for="interes">Interés Mensual</label>
+                    <input type="text" value="0.8" class="form-control" id="interes" placeholder="Ingresar tasa de interés mensual">
+                </div>
                 <div class="form-group">
-                    <label for="tnm">TNM (%)</label>
-                    <input type="text" value="0.8" class="form-control" id="tnm" placeholder="Ingresar TNM">
+                    <label for="interes">TNM (%)</label>
+                    <input type="text" value="0.8" class="form-control" id="interes" placeholder="Ingresar TNM">
                 </div>
                 <div class="form-group">
                     <label for="tem">TEM</label>
@@ -42,7 +43,7 @@
                 </div>
                 <button type="submit" class="btn btn-primary" id="btnCalcular">Calcular</button>
                 <button type="button" class="btn btn-secondary" id="btnCambiarMoneda">Cambiar moneda</button>
-                <button type="button" class="btn btn-secondary" id="btnConvertirTNA">Convertir TNM a TEM</button>
+                <button type="button" class="btn btn-secondary" id="btnConvertirTNA">Convertir TNA a TEA</button>
             </div>
             <div class="col-6">
                 <table id="lista-tabla" class="table">
@@ -89,11 +90,11 @@
             }
         }
 
-        // Función para convertir TNM a TEM
-        function convertirTNMaTEM() {
-            var tnm = parseFloat(document.getElementById("tnm").value);
-            var tem = Math.pow(1 + tnm / 100, 1 / 12) - 1;
-            document.getElementById("tem").value = tem.toFixed(2);
+        // Función para convertir TNA a TEA
+        function convertirTNAaTEA() {
+            var tna = parseFloat(document.getElementById("tna").value);
+            var tea = Math.pow(1 + tna / 100, 12) - 1;
+            document.getElementById("tem").value = tea.toFixed(2);
         }
 
         // Función para cambiar el tiempo de meses a años y viceversa
@@ -122,23 +123,17 @@
         // Evento click para el botón de cambiar moneda
         document.getElementById("btnCambiarMoneda").addEventListener("click", cambiarMoneda);
 
-        // Evento click para el botón de convertir TNM a TEM
-        document.getElementById("btnConvertirTNA").addEventListener("click", convertirTNMaTEM);
+        // Evento click para el botón de convertir TNA a TEA
+        document.getElementById("btnConvertirTNA").addEventListener("click", convertirTNAaTEA);
 
         // Evento click para el botón de cambiar tiempo
         document.getElementById("btnCambiarTiempo").addEventListener("click", cambiarTiempo);
     </script>
 
     <!-- llamada a bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnHfAG3vo0m2o1KR6D"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUzF3ypfzF+QJ8h6Ls8eN7J4Bj6m1iRM4wewb1+ErmU2N"
-        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0OqOweUmS6VjRg1fFScvbB8f8xJx0sIBt+x4Y7gR6qD9vqf6BhqF5JwBNEf" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 
 </html>
